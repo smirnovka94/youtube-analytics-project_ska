@@ -13,13 +13,13 @@ class Channel:
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
+
         load_dotenv()
         api_key: str = os.getenv('API_KEY')
         youtube = build('youtube', 'v3', developerKey=api_key)
         '''
         получить данные о канале по его id
         docs: https://developers.google.com/youtube/v3/docs/channels/list
-
         сервис для быстрого получения id канала: https://commentpicker.com/youtube-channel-id.php
         '''
         channel = youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()
