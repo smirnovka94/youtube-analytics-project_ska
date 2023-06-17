@@ -78,4 +78,48 @@ class Channel:
         with open(file, "w") as write_file:
             json.dump(data, write_file)
 
+    def __str__(self) -> str:
+        return f"{self.title} ({self.url})}"
 
+    def __add__(self, other):
+        """Сложение количества подписчиков"""
+        return int(self.subscriber_count) + int(other.subscriber_count)
+
+    def __sub__(self, other):
+        """Разность количества подписчиков"""
+        return int(self.subscriber_count) - int(other.subscriber_count)
+
+    def __gt__(self, other):
+        """
+        Сравнение количества подписчиков.
+        Если первый канал больше второго, то возвращает True
+        """
+        return int(self.subscriber_count) > int(other.subscriber_count)
+
+    def __ge__(self, other):
+        """
+        Сравнение количества подписчиков.
+        Если первый канал больше либо равен второму, то возвращает True
+        """
+        return int(self.subscriber_count) >= int(other.subscriber_count)
+
+    def __lt__(self, other):
+        """
+        Сравнение количества подписчиков.
+        Если первый канал меньше второго, то возвращает True
+        """
+        return int(self.subscriber_count) < int(other.subscriber_count)
+
+    def __le__(self, other):
+        """
+        Сравнение количества подписчиков.
+        Если первый канал меньше либо равен второму, то возвращает True
+        """
+        return int(self.subscriber_count) <= int(other.subscriber_count)
+
+    def __eq__(self, other):
+        """
+        Сравнение количества подписчиков.
+        Если равны, то возвращает True
+        """
+        return int(self.subscriber_count) == int(other.subscriber_count)
