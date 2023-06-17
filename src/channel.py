@@ -79,7 +79,7 @@ class Channel:
             json.dump(data, write_file)
 
     def __str__(self) -> str:
-        return f"{self.title} ({self.url})}"
+        return f"{self.title} ({self.url})"
 
     def __add__(self, other):
         """Сложение количества подписчиков"""
