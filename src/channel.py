@@ -10,12 +10,17 @@ class Channel:
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
         self.__channel_id = channel_id
+        # self.title = self.print_info()["items"][0]["snippet"]['title']
 
-    def print_info(self) -> None:
-        """Выводит в консоль информацию о канале."""
+    def entrance_API(self):
+        """вход в API."""
         load_dotenv()
         api_key: str = os.getenv('API_KEY')
         youtube = build('youtube', 'v3', developerKey=api_key)
+        return youtube
+    def print_info(self) -> None:
+        """Выводит в консоль информацию о канале."""
+        youtube = self.entrance_API()
         '''
         получить данные о канале по его id
         docs: https://developers.google.com/youtube/v3/docs/channels/list
@@ -27,18 +32,19 @@ class Channel:
 
     @property
     def channel_id(self):
-        """название канала"""
+        """ID канала"""
         return self.__channel_id
 
     @property
     def title(self):
         """название канала"""
         return self.print_info()["items"][0]["snippet"]['title']
+
     @property
     def description(self):
         """описание канала"""
         data_description = self.print_info()["items"][0]["snippet"]['description']
-        return data_description.split('\n')[0]
+        return data_description.split('\n')[-1]
     @property
     def url(self):
         """ссылка на канал"""
@@ -123,3 +129,5 @@ class Channel:
         Если равны, то возвращает True
         """
         return int(self.subscriber_count) == int(other.subscriber_count)
+
+
