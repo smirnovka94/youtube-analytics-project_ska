@@ -1,5 +1,6 @@
 import json
 import os
+from dotenv import load_dotenv
 
 # необходимо установить через: pip install google-api-python-client
 from googleapiclient.discovery import build
@@ -8,7 +9,9 @@ import isodate
 
 
 # YT_API_KEY скопирован из гугла и вставлен в переменные окружения
-api_key: str = os.getenv('YT_API_KEY')
+
+load_dotenv()
+api_key: str = os.getenv('API_KEY')
 
 # создать специальный объект для работы с API
 youtube = build('youtube', 'v3', developerKey=api_key)
@@ -25,10 +28,14 @@ docs: https://developers.google.com/youtube/v3/docs/channels/list
 
 сервис для быстрого получения id канала: https://commentpicker.com/youtube-channel-id.php
 '''
-# channel_id = 'UC-OVMPlMA3-YCIeg4z5z23A'  # MoscowPython
+#channel_id = 'UC-OVMPlMA3-YCIeg4z5z23A'  # MoscowPython
 channel_id = 'UCwHL6WHUarjGfUM_586me8w'  # HighLoad Channel
+
+
+# video1 = Video('AWX4JnAnjBE')
+
 channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
-printj(channel)
+# printj(channel)
 
 
 '''
@@ -40,9 +47,9 @@ playlists = youtube.playlists().list(channelId=channel_id,
                                      maxResults=50,
                                      ).execute()
 # printj(playlists)
-for playlist in playlists['items']:
+"""for playlist in playlists['items']:
     print(playlist)
-    print()
+    print()"""
 
 
 '''
@@ -54,6 +61,7 @@ https://www.youtube.com/playlist?list=PLH-XmS0lSi_zdhYvcwUfv0N88LQRt6UZn
 или из ответа API: см. playlists выше
 '''
 playlist_id = 'PLH-XmS0lSi_zdhYvcwUfv0N88LQRt6UZn'
+
 playlist_videos = youtube.playlistItems().list(playlistId=playlist_id,
                                                part='contentDetails',
                                                maxResults=50,
@@ -62,7 +70,7 @@ playlist_videos = youtube.playlistItems().list(playlistId=playlist_id,
 
 # получить все id видеороликов из плейлиста
 video_ids: list[str] = [video['contentDetails']['videoId'] for video in playlist_videos['items']]
-# print(video_ids)
+print(video_ids)
 
 
 '''
@@ -78,7 +86,7 @@ for video in video_response['items']:
     # YouTube video duration is in ISO 8601 format
     iso_8601_duration = video['contentDetails']['duration']
     duration = isodate.parse_duration(iso_8601_duration)
-    print(duration)
+    # print(duration)
 
 
 '''
