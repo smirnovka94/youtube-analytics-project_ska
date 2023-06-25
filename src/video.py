@@ -1,6 +1,3 @@
-import os
-from dotenv import load_dotenv
-from googleapiclient.discovery import build
 from src.channel import Channel
 
 class Video(Channel):
