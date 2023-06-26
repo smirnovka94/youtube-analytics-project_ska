@@ -1,11 +1,17 @@
-from src.channel import Channel
+import os
+from dotenv import load_dotenv
+from googleapiclient.discovery import build
 
-class Video(Channel):
-    def __init__(self,video_id):
+class Video():
+    def __init__(self, video_id):
         self.video_id = video_id
 
     def entrance_API(self):
-        return super().entrance_API()
+        """вход в API."""
+        load_dotenv()
+        api_key: str = os.getenv('API_KEY')
+        youtube = build('youtube', 'v3', developerKey=api_key)
+        return youtube
     def print_info(self) -> None:
         youtube = self.entrance_API()
         video_response = youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
@@ -16,17 +22,18 @@ class Video(Channel):
     @property
     def title(self):
         """название канала"""
-        return super().title
+        return self.print_info()["items"][0]["snippet"]['title']
 
     @property
     def description(self):
         """ссылка на канал"""
-        return super().description
+        data_description = self.print_info()["items"][0]["snippet"]['description']
+        return data_description.split('\n')[-1]
 
     @property
     def view_count(self):
         """общее количество просмотров"""
-        return super().view_count
+        return self.print_info()["items"][0]["statistics"]["videoCount"]
 
     @property
     def like_count(self):
@@ -36,7 +43,7 @@ class Video(Channel):
     def __str__(self) -> str:
         return self.title
 
-class PLVideo(Channel):
+class PLVideo(Video):
 
     def __init__(self, video_id, playlist_id) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
