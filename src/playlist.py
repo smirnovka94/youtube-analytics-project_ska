@@ -1,6 +1,5 @@
-import json
 import os
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import List
 import isodate
 from dotenv import load_dotenv
@@ -68,8 +67,3 @@ class PlayList():
             if int(like_count) > like_rating:
                 best_result = f"https://youtu.be/{video_id}"
         return best_result
-
-# pl = PlayList('PLv_zOGKKxVpj-n2qLkEM2Hj96LO6uqgQw')
-# print(pl.url)
-#
-# print(pl.show_best_video())
