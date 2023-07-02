@@ -6,6 +6,7 @@ class Video():
     def __init__(self, video_id):
         self.video_id = video_id
 
+
     def entrance_API(self):
         """вход в API."""
         load_dotenv()
@@ -22,23 +23,38 @@ class Video():
     @property
     def title(self):
         """название канала"""
-        return self.print_info()["items"][0]["snippet"]['title']
+        try:
+            self.print_info()["items"][0]["snippet"]['title']
+        except IndexError:
+            return None
+        else:
+            return self.print_info()["items"][0]["snippet"]['title']
+
 
     @property
     def description(self):
         """ссылка на канал"""
         data_description = self.print_info()["items"][0]["snippet"]['description']
-        return data_description.split('\n')[-1]
+        if self.title == None:
+            return None
+        else:
+            return data_description.split('\n')[-1]
 
     @property
     def view_count(self):
         """общее количество просмотров"""
-        return self.print_info()["items"][0]["statistics"]["videoCount"]
+        if self.title == None:
+            return None
+        else:
+            return self.print_info()["items"][0]["statistics"]["videoCount"]
 
     @property
     def like_count(self):
         """общее количество лайков"""
-        return self.print_info()["items"][0]["statistics"]["likeCount"]
+        if self.title == None:
+            return None
+        else:
+            return self.print_info()["items"][0]["statistics"]["likeCount"]
 
     def __str__(self) -> str:
         return self.title
